@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+		<title>POSTGIS</title>
 
 		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 		<meta name="author" content="Hakim El Hattab">
@@ -44,12 +44,156 @@
 		<div class="slides">
 
       <section>
-      	GISi
+      	<h1>PostGIS!<h2>
+		<h3>Christopher Fricke @ GISi</h3>
       </section>
 
       <section>
-      	<a href="http://gisinc.com">Check out our website</a>
+      	<img src="img/540px-Postgresql_elephant.png" width="300px">
+		
+		<div class="softwareInfo">
+			<table>
+				<thead>
+					<tr>
+						<th colspan=2>PostgreSQL</th>
+					</tr>
+				</thead>
+				<tr>
+					<th>License:</th><td><a href="http://www.postgresql.org/about/licence/">PostgreSQL License</a></td>
+				</tr>
+				<tr>
+					<th>Stable Version:</th><td>9.3.5</td>
+				</tr>
+				<tr>
+					<th>Release Date:</th><td>July 24, 2014</td>
+				</tr>
+			</table>
+		</div>
+		
+		<aside class="notes">
+			I cannot talk about PostGIS without first going through PostgreSQL. Postgre is a database management system 
+			that competes in the same space as MySQL. Postgre is cooked in with Indexing, 
+			<a href="http://www.postgresql.org/docs/9.2/static/datatype.html">many different data types incuding JSON</a>, and a 
+			programming language PL/pgSQL that is similar to TSQL.
+			
+			I became interested in PostgreSQL back in 2009 when Oracle bought out MySQL.  I was
+			a huge MySQL fan, but I really didn't want to deal with Oracle.  Subsequently a lot of people felt like me and MariaDB was
+			spun off of MySQL. 
+
+			PostgreSQL, through PostGIS, also has SUBSTANTIALLY better spatial capabilities compared to MySQL.  You can pretty much do anything in 
+			PostgreSQL with regards to spatial analysis.  Back at the time I forked from MySQL, it couldn't even do a proper point-in-polygon.  
+		</aside>
       </section>
+	  
+	  <section>
+	  
+		<h2><a href="https://github.com/postgres/postgres">postgres on github</a></h2>
+		<img src="img/postgregithub.png" />
+		
+		<aside class="notes">The best part of Postgre is that it is open source.  This has allowed a bunch of crazy projects to prosper, 
+		like PostGIS for spatial databases, PGRouting for vehicle routing, HStore for schema-less data storage, and many more that I don't use.</aside>
+	  </section>
+	  	  <section>
+		<img src="img/PostGIS_logo.png" />
+			
+		<table>
+				<thead>
+					<tr>
+						<th colspan=2>PostgreSQL</th>
+					</tr>
+				</thead>
+				<tr>
+					<th>License:</th><td><a href="http://www.gnu.org/copyleft/gpl.html">GNU GPL</a></td>
+				</tr>
+				<tr>
+					<th>Stable Version:</th><td>2.1.3</td>
+				</tr>
+				<tr>
+					<th>Release Date:</th><td>May 19, 2014</td>
+				</tr>
+			</table>
+		
+		<aside class="notes">Postgres is awesome, but that is not why I'm here...  PostGIS is a spatial extension to Postgre.  At the lowest level 
+		Postgre allows us to define spatial data types, point; line; polygon, build spatial indexes, and manage projections. 
+		</aside>
+	  </section>
+	  
+	  <section>
+	  <table class="fifty">
+		  <tr><th>QGIS</th><td><img src="img/yes_check.png" width="100px"/></td></tr>
+		  <tr><th>GeoServer</th><td><img src="img/yes_check.png" width="100px" /></td></tr>
+		  <tr><th>MapServer</th><td><img src="img/yes_check.png" width="100px" /></td></tr>
+		  <tr><th>TileMill</th><td><img src="img/yes_check.png" width="100px" /></td></tr>
+		</table>
+		<table class="fifty">
+		  <tr><th>uDig</th><td><img src="img/yes_check.png" width="100px" /></td></tr>
+		  <tr><th>Grass</th><td><img src="img/yes_check.png" width="100px" /></td></tr>
+		  <tr><th>AutoCAD</th><td><img src="img/yes_check.png" width="100px" /></td></th>
+		  <tr><th><em>ArcGIS Suite</em></th><td><img src="img/yes_check.png" width="100px" /></td></tr>
+	  </table>
+	  <aside class="notes">The beauty is that pretty much everyone supports it.  EVEN ESRI!!!!!!!!  Although it is a huge pain in the butt.  
+	  I have a white paper on the grid on how to set it up.</aside>
+	  </section>
+	  
+	  <section>
+		<img src="img/postgre.png" />
+		
+		<aside class="notes">
+			PostGIS is the only totally interoperable data store I can think of.  Yes we can use native SQL Server and Oracle geometry types in
+			the Esri suite of products, but this limits our ability to integrate other software into the stack.  
+		</aside>
+	  </section>
+	 
+	  
+	  <section>
+		<img src="http://s3-ec.buzzfed.com/static/enhanced/webdr03/2012/11/8/18/anigif_enhanced-buzz-14994-1352416823-10_preview.gif" />
+		
+		<aside class="notes">
+			BUT WAIT THERE'S MORE!!!
+		</aside>
+	  </section>
+	  <section>
+		<img src="http://www1.usfsp.edu/gisworkshop/images/concept_GIS.gif" />
+	    <aside class="notes">
+			Personally, the hardest part of performing analysis is keeping to a single set of directions all the way through. I ALWAYS end up
+			forgetting a step and waste a half a days work.  This is partially what got me into learning python.
+			
+			THEN I realized I could do 90% of the stuff I was doing in python with a couple SQL queries.
+		</aside>
+	  </section>
+	  
+	  <section>
+			<img src="img/model.png" />
+			<div>
+			<pre>
+SELECT room.*
+FROM 
+	(SELECT shape, objectid	FROM room WHERE OBJECTID = 2459) selected, 
+	room
+WHERE
+	ST_3DDWithin(room.shape, selected.shape, 10)
+	AND NOT selected.objectid = room.objectid;
+	</pre>
+			</div>
+			
+			<aside class="notes">The best part about this is that I don't create a bunch of these little shapefiles called, "Buffer 1.shp",
+			"Buffer 2.shp".  I was also traveling while I made this slide and didn't have 3D Analyst extension checked out so I couldn't
+			test this model out!</aside>
+	  </section>
+	  
+	  <section>
+			<img src="img/routing.png" />
+			
+			<aside class="notes">Finally, the PG Routing extensions allows you to make some pretty cool routes (in 3D with a little futzing).
+			Here is an example route generated from the University of Washington dataset.  As you can see the route goes up some stairs
+			and then down some stairs.
+			</aside>
+	  </section>
+	  
+	  <section>
+		<h1>I <3 PostGIS</h1>
+		<img src="http://www.tumblr18.com/t18/2013/12/Life-is-nothing-without-love.jpg" width="800px"/>
+	  </section>
 
 		</div>
       

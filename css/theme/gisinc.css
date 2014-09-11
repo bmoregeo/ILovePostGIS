@@ -202,3 +202,8 @@ em {
  *********************************************/
 .reveal .slide-number {
   color: #f15a23; }
+
+  .fifty{
+  width:45%!important;
+  border:10px!important;
+  }

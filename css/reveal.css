@@ -1877,4 +1877,30 @@ body {
 	visibility: hidden;
 }
 
+.reveal section img{
+	border: none !important;
+	background: none !important;
+	box-shadow: none !important;
+}
 
+table{
+	float:left !important;
+}
+thead tr{
+	border-bottom:1px solid #FFF;
+}
+thead th{
+	text-align:center;
+}
+
+th{
+	vertical-align:middle !important;
+}
+
+.softwareInfo{
+	float:left;
+}
+
+pre{
+background: #20396D;
+}
